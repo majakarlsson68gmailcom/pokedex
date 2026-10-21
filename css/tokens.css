@@ -1,0 +1,97 @@
+/* =========================================================
+   tokens.css – alla färger, typsnitt och avstånd på ett ställe.
+   Mörkt läge = klassen "dark" på <html> (document.documentElement).
+   JS ska ALDRIG sätta enskilda färger – bara växla klassen.
+   ========================================================= */
+
+:root {
+  color-scheme: light;
+
+  /* Ytor och text */
+  --color-bg: #f6f3ee;
+  --color-surface: #ffffff;
+  --color-surface-2: #ece7df;
+  --color-border: #d9d1c6;
+  --color-text: #1d1b19;
+  --color-text-muted: #5b554f;
+
+  /* Accent och tillstånd */
+  --color-accent: #c0262d;
+  --color-accent-hover: #9f1c22;
+  --color-on-accent: #ffffff;
+  --color-focus: #1d5fd0;
+  --color-success: #1d7438;
+  --color-success-bg: #e3f3e7;
+  --color-error: #b3261e;
+  --color-error-bg: #fbe7e5;
+
+  /* Typsnitt */
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Avstånd och former */
+  --gutter: 1rem;
+  --max-width: 72rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --shadow-sm: 0 1px 2px rgb(29 27 25 / 0.06), 0 2px 8px rgb(29 27 25 / 0.06);
+  --shadow-lg: 0 12px 40px rgb(29 27 25 / 0.18);
+}
+
+:root.dark {
+  color-scheme: dark;
+
+  --color-bg: #141311;
+  --color-surface: #1f1d1a;
+  --color-surface-2: #2c2925;
+  --color-border: #3d3934;
+  --color-text: #f3efe9;
+  --color-text-muted: #b8b0a6;
+
+  --color-accent: #ff6f61;
+  --color-accent-hover: #ff8f84;
+  --color-on-accent: #1a0c0a;
+  --color-focus: #8ab6ff;
+  --color-success: #7ddc98;
+  --color-success-bg: #173823;
+  --color-error: #ff8a80;
+  --color-error-bg: #3f1a17;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 12px 40px rgb(0 0 0 / 0.6);
+}
+
+/* Brytpunkter: 40em (640px), 60em (960px), 75em (1200px) */
+@media (min-width: 40em) {
+  :root { --gutter: 1.5rem; }
+}
+
+@media (min-width: 75em) {
+  :root { --gutter: 2rem; }
+}
+
+/* ---------------------------------------------------------
+   Typfärger. Används bara som dekor (prickar, bakgrunder),
+   aldrig som textfärg – därför klarar texten alltid kontrasten.
+   Sätt data-type="fire" (eller data-filter="fire") på ett
+   element så får det variabeln --type-color.
+   --------------------------------------------------------- */
+[data-type="normal"],   [data-filter="normal"]   { --type-color: #a8a77a; }
+[data-type="fire"],     [data-filter="fire"]     { --type-color: #ee8130; }
+[data-type="water"],    [data-filter="water"]    { --type-color: #6390f0; }
+[data-type="grass"],    [data-filter="grass"]    { --type-color: #7ac74c; }
+[data-type="electric"], [data-filter="electric"] { --type-color: #f7d02c; }
+[data-type="ice"],      [data-filter="ice"]      { --type-color: #96d9d6; }
+[data-type="fighting"], [data-filter="fighting"] { --type-color: #c22e28; }
+[data-type="poison"],   [data-filter="poison"]   { --type-color: #a33ea1; }
+[data-type="ground"],   [data-filter="ground"]   { --type-color: #e2bf65; }
+[data-type="flying"],   [data-filter="flying"]   { --type-color: #a98ff3; }
+[data-type="psychic"],  [data-filter="psychic"]  { --type-color: #f95587; }
+[data-type="bug"],      [data-filter="bug"]      { --type-color: #a6b91a; }
+[data-type="rock"],     [data-filter="rock"]     { --type-color: #b6a136; }
+[data-type="ghost"],    [data-filter="ghost"]    { --type-color: #735797; }
+[data-type="dragon"],   [data-filter="dragon"]   { --type-color: #6f35fc; }
+[data-type="dark"],     [data-filter="dark"]     { --type-color: #705746; }
+[data-type="steel"],    [data-filter="steel"]    { --type-color: #b7b7ce; }
+[data-type="fairy"],    [data-filter="fairy"]    { --type-color: #d685ad; }

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pokédex – övning i fetch och DOM</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/pokedex/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Hoppa till innehållet</a>
+
+  <header class="site-header">
+    <div class="site-header__inner container">
+      <a class="logo" href="index.html">
+        <span class="logo__mark" aria-hidden="true"></span>
+        Pokédex
+      </a>
+      <nav class="site-nav" aria-label="Huvudmeny">
+        <ul class="site-nav__list">
+          <li><a class="site-nav__link" href="index.html" aria-current="page">Pokédex</a></li>
+          <li><a class="site-nav__link" href="quiz.html">Quiz</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false" data-theme-toggle>
+        <span class="theme-toggle__icon" aria-hidden="true"></span>
+        Mörkt läge
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="container page">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">Övning · fetch, DOM och händelser</p>
+      <h1 id="page-title">Pokédex</h1>
+      <p class="intro__text">Sök, filtrera och utforska. Allt innehåll hämtas från PokéAPI medan du tittar.</p>
+    </section>
+
+    <form class="search" role="search" data-search-form>
+      <label class="search__label" for="search-input">Sök på namn eller nummer</label>
+      <div class="search__row">
+        <input class="search__input" id="search-input" name="query" type="search" placeholder="t.ex. pikachu eller 25" autocomplete="off" required>
+        <button class="button button--primary" type="submit">Sök</button>
+      </div>
+    </form>
+
+    <section class="filters" aria-labelledby="filter-heading">
+      <h2 class="eyebrow" id="filter-heading">Filtrera på typ</h2>
+      <ul class="filter-list" data-filter-list>
+        <li><button class="filter-button" type="button" aria-pressed="true" data-filter="all">Alla</button></li>
+        <!-- Resten av knapparna skapas med JS från data/labels.json -->
+      </ul>
+    </section>
+
+    <section class="results" aria-labelledby="results-heading">
+      <div class="results__header">
+        <h2 id="results-heading" data-results-heading>Alla Pokémon</h2>
+        <p class="status" role="status" data-status></p>
+      </div>
+
+      <!-- Hit renderas fel- och tomt-meddelanden -->
+      <div data-message></div>
+
+      <!-- Hit renderas korten (och skeleton-korten medan det laddar) -->
+      <ul class="card-grid" data-pokemon-list></ul>
+
+      <div class="load-more">
+        <button class="button" type="button" data-load-more>Visa fler</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Data från <a href="https://pokeapi.co/">PokéAPI</a>. Ett övningsprojekt, inte en officiell produkt.</p>
+    </div>
+  </footer>
+
+  <!-- ============ DETALJVY (modal) ============ -->
+  <dialog class="details" aria-labelledby="details-name" data-details-dialog>
+    <button class="icon-button details__close" type="button" data-close-dialog>
+      <span aria-hidden="true">✕</span>
+      <span class="visually-hidden">Stäng</span>
+    </button>
+
+    <div class="details__body">
+      <div class="details__media" data-details-media>
+        <img class="details__image" src="img/placeholder.svg" alt="" width="240" height="240" data-details-image>
+      </div>
+
+      <div class="details__content">
+        <p class="details__number" data-details-number>#000</p>
+        <h2 class="details__title" id="details-name" data-details-name>Pokémon</h2>
+        <ul class="type-list" aria-label="Typer" data-details-types></ul>
+
+        <!-- Extra-uppgift: beskrivning från /pokemon-species -->
+        <p class="details__description" data-details-description></p>
+
+        <dl class="facts">
+          <div class="facts__item">
+            <dt>Längd</dt>
+            <dd data-details-height>–</dd>
+          </div>
+          <div class="facts__item">
+            <dt>Vikt</dt>
+            <dd data-details-weight>–</dd>
+          </div>
+          <div class="facts__item">
+            <dt>Förmågor</dt>
+            <dd data-details-abilities>–</dd>
+          </div>
+        </dl>
+
+        <h3 class="details__subtitle">Grundvärden</h3>
+        <ul class="stat-list" data-details-stats></ul>
+
+        <button class="button details__favorite" type="button" aria-pressed="false" data-details-favorite>
+          <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.4-4.5-9.3-9C1.4 8.4 3.4 4.8 7 4.8c2 0 3.6 1.1 5 2.9 1.4-1.8 3-2.9 5-2.9 3.6 0 5.6 3.6 4.3 6.7-1.9 4.5-9.3 9-9.3 9Z"/></svg>
+          Favorit
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ============ MALLAR (templates) ============ -->
+
+  <!-- Ett Pokémon-kort -->
+  <template id="pokemon-card-template">
+    <li class="card" data-card>
+      <div class="card__media">
+        <img class="card__image" src="img/placeholder.svg" alt="" width="200" height="200" loading="lazy" data-card-image>
+      </div>
+      <p class="card__number" data-card-number>#000</p>
+      <h3 class="card__title">
+        <button class="card__open" type="button" data-action="open-details" data-card-name>Namn</button>
+      </h3>
+      <ul class="type-list" aria-label="Typer" data-card-types></ul>
+      <button class="fav-button" type="button" aria-pressed="false" data-action="toggle-favorite">
+        <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.4-4.5-9.3-9C1.4 8.4 3.4 4.8 7 4.8c2 0 3.6 1.1 5 2.9 1.4-1.8 3-2.9 5-2.9 3.6 0 5.6 3.6 4.3 6.7-1.9 4.5-9.3 9-9.3 9Z"/></svg>
+        <span class="visually-hidden" data-fav-label>Spara som favorit</span>
+      </button>
+    </li>
+  </template>
+
+  <!-- En typ-etikett, t.ex. "Eld" -->
+  <template id="type-pill-template">
+    <li class="type-pill" data-type="" data-type-label>Typ</li>
+  </template>
+
+  <!-- En filterknapp -->
+  <template id="filter-button-template">
+    <li><button class="filter-button" type="button" aria-pressed="false" data-filter="">Typ</button></li>
+  </template>
+
+  <!-- Ett skeleton-kort som visas medan det laddar -->
+  <template id="skeleton-card-template">
+    <li class="card card--skeleton" aria-hidden="true">
+      <div class="card__media skeleton"></div>
+      <div class="skeleton skeleton--line skeleton--short"></div>
+      <div class="skeleton skeleton--line"></div>
+      <div class="skeleton skeleton--pill"></div>
+    </li>
+  </template>
+
+  <!-- Fel- eller tomt-meddelande. Lägg till klassen message--error eller message--empty -->
+  <template id="message-template">
+    <div class="message">
+      <h3 class="message__title" data-message-title>Rubrik</h3>
+      <p class="message__text" data-message-text>Text</p>
+      <button class="button" type="button" data-retry>Försök igen</button>
+    </div>
+  </template>
+
+  <!-- En rad i statistiklistan i detaljvyn -->
+  <template id="stat-template">
+    <li class="stat" style="--value: 0" data-stat>
+      <span class="stat__label" data-stat-label>Namn</span>
+      <span class="stat__value" data-stat-value>0</span>
+      <span class="stat__bar" aria-hidden="true"></span>
+    </li>
+  </template>
+</body>
+</html>

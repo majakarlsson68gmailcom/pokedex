@@ -1,0 +1,30 @@
+{
+  "types": {
+    "normal": "Normal",
+    "fire": "Eld",
+    "water": "Vatten",
+    "grass": "Gräs",
+    "electric": "Elektrisk",
+    "ice": "Is",
+    "fighting": "Kamp",
+    "poison": "Gift",
+    "ground": "Mark",
+    "flying": "Flygande",
+    "psychic": "Psykisk",
+    "bug": "Insekt",
+    "rock": "Sten",
+    "ghost": "Spöke",
+    "dragon": "Drake",
+    "dark": "Mörker",
+    "steel": "Stål",
+    "fairy": "Fe"
+  },
+  "stats": {
+    "hp": "HP",
+    "attack": "Attack",
+    "defense": "Försvar",
+    "special-attack": "Sp. attack",
+    "special-defense": "Sp. försvar",
+    "speed": "Fart"
+  }
+}

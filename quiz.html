@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vem är det Pokémon? – quiz</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/quiz/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Hoppa till innehållet</a>
+
+  <header class="site-header">
+    <div class="site-header__inner container">
+      <a class="logo" href="index.html">
+        <span class="logo__mark" aria-hidden="true"></span>
+        Pokédex
+      </a>
+      <nav class="site-nav" aria-label="Huvudmeny">
+        <ul class="site-nav__list">
+          <li><a class="site-nav__link" href="index.html">Pokédex</a></li>
+          <li><a class="site-nav__link" href="quiz.html" aria-current="page">Quiz</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-pressed="false" data-theme-toggle>
+        <span class="theme-toggle__icon" aria-hidden="true"></span>
+        Mörkt läge
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="container container--narrow page">
+
+    <!-- ============ VY 1: START ============ -->
+    <section class="quiz-view" aria-labelledby="start-title" data-view="start">
+      <div class="intro">
+        <p class="eyebrow">Quiz · 10 frågor · 15 sekunder per fråga</p>
+        <h1 id="start-title" tabindex="-1">Vem är det Pokémon?</h1>
+        <p class="intro__text">Du ser en siluett och får fyra svarsalternativ. Hinner du innan tiden tar slut?</p>
+      </div>
+
+      <form class="quiz-start" data-start-form>
+        <label class="search__label" for="player-name">Ditt namn</label>
+        <div class="search__row">
+          <input class="search__input" id="player-name" name="playerName" type="text" maxlength="20" autocomplete="nickname" required>
+          <button class="button button--primary" type="submit" data-start-button>Starta quiz</button>
+        </div>
+      </form>
+
+      <p class="status" role="status" data-quiz-status></p>
+      <div data-quiz-message></div>
+
+      <section class="leaderboard" aria-labelledby="leaderboard-title">
+        <h2 id="leaderboard-title">Topplista</h2>
+        <ol class="leaderboard__list" data-leaderboard></ol>
+        <p class="leaderboard__empty" data-leaderboard-empty>Inga resultat än. Bli först!</p>
+      </section>
+    </section>
+
+    <!-- ============ VY 2: FRÅGA ============ -->
+    <section class="quiz-view" aria-labelledby="question-title" data-view="question" hidden>
+      <div class="quiz-hud">
+        <p data-question-progress>Fråga 1 av 10</p>
+        <p data-score>0 poäng</p>
+      </div>
+
+      <div class="timer" style="--progress: 1" data-timer>
+        <span class="timer__track" aria-hidden="true"><span class="timer__fill"></span></span>
+        <p class="timer__text"><span data-timer-text>15</span> s kvar</p>
+      </div>
+
+      <h2 class="quiz-question" id="question-title" tabindex="-1" data-question-title>Vem är det Pokémon?</h2>
+
+      <figure class="silhouette" data-silhouette>
+        <img class="silhouette__image" src="img/placeholder.svg" alt="Siluett av en okänd Pokémon" width="280" height="280" data-question-image>
+      </figure>
+
+      <ul class="answer-list" data-answer-list></ul>
+
+      <p class="feedback" role="status" data-feedback></p>
+
+      <div class="button-row">
+        <button class="button button--primary" type="button" data-next-button hidden>Nästa fråga</button>
+      </div>
+    </section>
+
+    <!-- ============ VY 3: RESULTAT ============ -->
+    <section class="quiz-view" aria-labelledby="result-title" data-view="result" hidden>
+      <div class="result">
+        <p class="eyebrow">Resultat</p>
+        <h2 class="result__title" id="result-title" tabindex="-1" data-result-title>Bra kämpat!</h2>
+        <p class="result__score"><span data-result-score>0</span><span class="result__total"> / <span data-result-total>10</span></span></p>
+        <p class="intro__text" data-result-text>Du fick 0 rätt av 10.</p>
+      </div>
+
+      <h3 class="eyebrow">Dina svar</h3>
+      <ol class="review-list" data-review-list></ol>
+
+      <div class="button-row">
+        <button class="button button--primary" type="button" data-play-again>Spela igen</button>
+        <a class="button" href="index.html">Till Pokédex</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Data från <a href="https://pokeapi.co/">PokéAPI</a>. Ett övningsprojekt, inte en officiell produkt.</p>
+    </div>
+  </footer>
+
+  <!-- ============ MALLAR (templates) ============ -->
+
+  <!-- Ett svarsalternativ. Lägg till klassen is-correct eller is-wrong efter svar -->
+  <template id="answer-template">
+    <li><button class="answer" type="button" data-answer="">Namn</button></li>
+  </template>
+
+  <!-- En rad i topplistan -->
+  <template id="leaderboard-row-template">
+    <li class="leaderboard__row">
+      <span class="leaderboard__name" data-row-name>Namn</span>
+      <span class="leaderboard__score" data-row-score>0/10</span>
+      <span class="leaderboard__date" data-row-date>2026-10-20</span>
+    </li>
+  </template>
+
+  <!-- En rad i resultatgenomgången. Lägg till klassen is-correct eller is-wrong -->
+  <template id="review-row-template">
+    <li class="review-row">
+      <img class="review-row__image" src="img/placeholder.svg" alt="" width="56" height="56" data-review-image>
+      <span class="review-row__name" data-review-name>Namn</span>
+      <span class="review-row__verdict" data-review-verdict>Rätt</span>
+    </li>
+  </template>
+
+  <!-- Felmeddelande (samma som i Pokédexen) -->
+  <template id="message-template">
+    <div class="message">
+      <h3 class="message__title" data-message-title>Rubrik</h3>
+      <p class="message__text" data-message-text>Text</p>
+      <button class="button" type="button" data-retry>Försök igen</button>
+    </div>
+  </template>
+</body>
+</html>
