@@ -41,7 +41,7 @@ export async function getLabels() {
  * @param {object} raw – ett objekt från /pokemon/{namn}
  */
 function toPokemon({id, name, height, weight, types, abilities, stats, sprites: { other }}) {
-  const image = other["official-artworkk"]?.front_default ?? "img/placeholder.svg"
+  const image = other["official-artwork"]?.front_default ?? "img/placeholder.svg"
   return { 
     id, 
     name, 

@@ -8,11 +8,6 @@
 // Flödet, alltid i den här ordningen:
 //   händelse → ändra state → rendera från state
 // =========================================================
-import { formatNumber } from "../shared/format.js";
-import { formatName } from "../shared/format.js";
-import { formatUnit } from "../shared/format.js";
-
-
 
 import { initTheme } from "../shared/theme.js";
 import { getLabels, getPokemon, getPokemonPage, PAGE_SIZE} from "../shared/api.js";
@@ -57,6 +52,7 @@ const state = {
 /**
  * STEG 3 – Startpunkten. Körs en gång, längst ner i filen.
  *
+ * i
  *  1. initTheme()
  *  2. Hämta labels och spara i state (behövs innan korten kan ritas)
  *  3. Rita filterknapparna
@@ -66,9 +62,16 @@ const state = {
  * Vad händer om labels.json inte går att hämta? Ska sidan stanna,
  * eller fortsätta utan svenska namn? Du bestämmer – motivera i README.
  */
+
+
+
+
 async function init() {
-  // TODO
+  initTheme();
+ state.labels = await getLabels();
+ await loadNextPage();
 }
+
 
 /**
  * STEG 4 – Hämtar nästa sida och hanterar alla tre lägena.
@@ -89,6 +92,15 @@ async function init() {
 async function loadNextPage() {
   // Skydd: om en hämtning redan pågår, gör ingenting.
   if (state.isLoading || !state.hasMore) return;
+
+  const pokemonPage = await getPokemonPage(state.offset);
+  state.pokemon = pokemonPage.pokemon;
+
+  state.offset += PAGE_SIZE;
+  
+
+  render();
+  console.log(pokemonPage.pokemon)
 
   // TODO
 }
@@ -111,7 +123,7 @@ function getVisiblePokemon() {
  *  - göm "Visa fler" när hasMore är false (attributet hidden)
  */
 function render() {
-  // TODO
+  renderPokemonList(elements.pokemonList, state.pokemon, state.labels)
 }
 
 /**
