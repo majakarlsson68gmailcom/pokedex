@@ -1,4 +1,4 @@
-# Pokédex – övningsprojekt inför u02 och u03
+# Pokédex – övningsprojekt
 
 Två sidor som hämtar data från [PokéAPI](https://pokeapi.co/) (gratis, ingen nyckel, ingen inloggning):
 
